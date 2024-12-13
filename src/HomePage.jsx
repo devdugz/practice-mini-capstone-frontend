@@ -26,11 +26,13 @@ export function HomePage() {
 
   useEffect(handleIndex, []);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (isLoading) return <div className="container mt-5 pt-5">Loading...</div>;
+  if (error) return <div className="container mt-5 pt-5">Error: {error}</div>;
 
   return (
-    <main>
+    <main className="mt-5 pt-1">
+      {" "}
+      {/* Added mt-5 pt-5 for spacing below header */}
       {/* Hero Section */}
       <div className="hero position-relative text-white text-center">
         <div className="bg-dark bg-opacity-75 py-5">
@@ -47,7 +49,6 @@ export function HomePage() {
           </div>
         </div>
       </div>
-
       {/* Features Section */}
       <div className="container py-5">
         <div className="row g-4">
@@ -104,7 +105,6 @@ export function HomePage() {
           </div>
         </div>
       </div>
-
       {/* Call to Action */}
       <div className="bg-light py-5">
         <div className="container">
