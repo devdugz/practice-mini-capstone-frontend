@@ -12,7 +12,7 @@ export function ProductsNew(props) {
 
   return (
     <div className="new-product">
-      <h2>Add New Product</h2>
+      <h2>Add New Product</h2>k
       <form onSubmit={handleSubmit}>
         <div>
           Name:{" "}
