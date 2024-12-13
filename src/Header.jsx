@@ -3,9 +3,12 @@ import { LogoutLink } from "./LogoutLink";
 
 export function Header() {
   const email = localStorage.getItem("email");
+  const isAdmin = localStorage.getItem("admin") === "true";
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow-sm">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+      {" "}
+      {/* Changed bg-primary to bg-dark */}
       <div className="container">
         <Link className="navbar-brand fw-bold" to="/">
           <i className="bi bi-music-note-beamed me-2"></i>
@@ -35,32 +38,38 @@ export function Header() {
                 Products
               </Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link px-3" to="/cart">
-                <i className="bi bi-cart me-1"></i>
-                Cart
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link px-3" to="/orders">
-                <i className="bi bi-box me-1"></i>
-                My Orders
-              </Link>
-            </li>
+            {email && (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link px-3" to="/cart">
+                    <i className="bi bi-cart me-1"></i>
+                    Cart
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link px-3" to="/orders">
+                    <i className="bi bi-box me-1"></i>
+                    My Orders
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
 
           <div className="navbar-nav">
             {email ? (
               <>
-                <Link className="nav-link px-3" to="/products/new">
-                  <i className="bi bi-plus-circle me-1"></i>
-                  Add Product
-                </Link>
+                {isAdmin && (
+                  <Link className="nav-link px-3" to="/products/new">
+                    <i className="bi bi-plus-circle me-1"></i>
+                    Add Product
+                  </Link>
+                )}
                 <span className="nav-link px-3 text-light">
                   <i className="bi bi-person-circle me-1"></i>
                   {email}
                 </span>
-                <LogoutLink className="nav-link px-3" />
+                <LogoutLink className="btn btn-light ms-2" />
               </>
             ) : (
               <>

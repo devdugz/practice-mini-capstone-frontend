@@ -13,6 +13,7 @@ export function LoginPage() {
       .then((response) => {
         console.log(response.data);
         localStorage.setItem("email", response.data.email);
+        localStorage.setItem("admin", response.data.admin);
         event.target.reset();
         window.location.href = "/"; // Change this to hide a modal, redirect to a specific page, etc.
       })
