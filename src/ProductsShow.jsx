@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-export function ProductsShow(props) {
+export function ProductsShow({ product, onUpdate, onDestroy }) {
   const [quantity, setQuantity] = useState(1);
 
   const handleQuantityChange = (value) => {
@@ -12,14 +12,14 @@ export function ProductsShow(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const params = new FormData(event.target);
-    props.onUpdate(props.product, params);
+    onUpdate(product, params);
     event.target.reset();
   };
 
   const handleAddToCart = () => {
     axios
       .post("/carted_products.json", {
-        product_id: props.product.id,
+        product_id: product.id,
         quantity: quantity,
       })
       .then((response) => {
@@ -34,23 +34,17 @@ export function ProductsShow(props) {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 pt-5">
       <div className="row">
-        {/* Product Details Card */}
-        <div className="col-md-6 mb-4">
-          <div className="card">
+        <div className="col-md-6">
+          <img
+            src={product.primary_image_url}
+            className="img-fluid rounded mb-4"
+            alt={product.name}
+          />
+          <div className="card mb-4">
             <div className="card-body">
-              <h2 className="card-title mb-4">{props.product.name}</h2>
-              <div className="mb-3">
-                <h5>Description:</h5>
-                <p className="card-text">{props.product.description}</p>
-              </div>
-              <div className="mb-3">
-                <h5>Price:</h5>
-                <p className="card-text text-primary fs-4">
-                  ${props.product.price}
-                </p>
-              </div>
+              <h5 className="card-title">Add to Cart</h5>
               <div className="mb-3">
                 <label className="form-label">Quantity:</label>
                 <div className="input-group">
@@ -81,8 +75,8 @@ export function ProductsShow(props) {
                 </div>
               </div>
               <button
+                className="btn btn-success w-100"
                 onClick={handleAddToCart}
-                className="btn btn-success w-100 mb-3"
               >
                 Add to Cart
               </button>
@@ -90,63 +84,62 @@ export function ProductsShow(props) {
           </div>
         </div>
 
-        {/* Edit Form Card */}
         <div className="col-md-6">
-          <div className="card">
-            <div className="card-body">
-              <h3 className="card-title mb-4">Edit Product</h3>
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label className="form-label">Name</label>
-                  <input
-                    name="name"
-                    type="text"
-                    className="form-control"
-                    defaultValue={props.product.name}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Description</label>
-                  <input
-                    name="description"
-                    type="text"
-                    className="form-control"
-                    defaultValue={props.product.description}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Price</label>
-                  <input
-                    name="price"
-                    type="text"
-                    className="form-control"
-                    defaultValue={props.product.price}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Supplier ID</label>
-                  <input
-                    name="supplier_id"
-                    type="text"
-                    className="form-control"
-                    defaultValue={props.product.supplier_id}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Quantity</label>
-                  <input
-                    name="quantity"
-                    type="text"
-                    className="form-control"
-                    defaultValue={props.product.quantity}
-                  />
-                </div>
-                <button type="submit" className="btn btn-primary w-100">
-                  Update Product
-                </button>
-              </form>
+          <h2 className="mb-4">{product.name}</h2>
+          <h4 className="text-primary mb-3">${product.price}</h4>
+          <p className="mb-4">{product.description}</p>
+
+          {localStorage.admin === "true" && (
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title mb-4">Edit Product</h5>
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <label className="form-label">Name</label>
+                    <input
+                      name="name"
+                      type="text"
+                      className="form-control"
+                      defaultValue={product.name}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">Price</label>
+                    <input
+                      name="price"
+                      type="number"
+                      className="form-control"
+                      defaultValue={product.price}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">Description</label>
+                    <textarea
+                      name="description"
+                      className="form-control"
+                      defaultValue={product.description}
+                      rows="3"
+                    />
+                  </div>
+                  <div className="d-flex gap-2">
+                    <button
+                      type="submit"
+                      className="btn btn-primary flex-grow-1"
+                    >
+                      Update Product
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-danger flex-grow-1"
+                      onClick={() => onDestroy(product)}
+                    >
+                      Delete Product
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
